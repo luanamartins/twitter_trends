@@ -6,7 +6,7 @@
 
 ## Run environment
 - Windows
-`/env/Scripts/activate`
+`./env/Scripts/activate`
 
 ## Save requirements
 `pip freeze > requirements.txt`
