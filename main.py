@@ -24,14 +24,16 @@ first = trends[0]
 query = first.url
 prefix_size = len('https://twitter.com/search')
 query = query[prefix_size:]
-# query = query + '&count=100'
+query = query + '&count=2'
 print(query)
 query_example = "q=twitter%20&result_type=recent&since=2014-07-19&count=100"
 results = api.GetSearch(raw_query=query)
 
-account = results[0].user.screen_name
-print(account)
 bom = botometer.Botometer(wait_on_ratelimit=True, rapidapi_key=s.rapidapi_key, **twitter_app_auth)
-response = bom.check_account(account)
-score = response["display_scores"]["universal"]
-print(score)
+account = results[0]
+for account in results:
+    name = '@' + account.user.screen_name
+    bom_score = bom.check_account(name)
+    score = bom_score["display_scores"]["universal"]
+    print(name + " " + str(score))
+
