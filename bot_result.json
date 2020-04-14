@@ -1,0 +1,32 @@
+{
+    "cap": {
+      "english": 0.00682617488477388,
+      "universal": 0.005778300973814037
+    },
+    "categories": {
+      "content": 0.05438011880405991,
+      "friend": 0.05729933687981478,
+      "network": 0.15895834190828398,
+      "sentiment": 0.08157836299629219,
+      "temporal": 0.10501652361101936,
+      "user": 0.12666630892224892
+    },
+    "display_scores": {
+      "content": 0.3,
+      "english": 0.7,
+      "friend": 0.3,
+      "network": 0.8,
+      "sentiment": 0.4,
+      "temporal": 0.5,
+      "universal": 0.6,
+      "user": 0.6
+    },
+    "scores": {
+      "english": 0.14589765727494236,
+      "universal": 0.11956986651967942
+    },
+    "user": {
+      "id_str": "1182803128225275906",
+      "screen_name": "ikibztriw"
+    }
+  }

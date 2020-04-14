@@ -1,11 +1,17 @@
 import settings as s
 import twitter
 import json
+import sys
 import yweather
 import botometer
+import csv
+
+from argparse import ArgumentParser
+
 
 client = yweather.Client()
 woeid = client.fetch_woeid('Brazil')
+threshold = 0.6
 
 twitter_app_auth = {
     'consumer_key': s.consumer_key,
@@ -23,33 +29,44 @@ api = twitter.Api(consumer_key=s.consumer_key,
 
 def query_trends():
     trends = api.GetTrendsWoeid(woeid)
-    prefix_size = len('https://twitter.com/search')
-    # query_example = 'q=twitter%20&result_type=recent&since=2014-07-19&count=100'
-
+    trends = trends[:1]
     results = []
+
     for trend in trends:
-        query = trend.url
-        query = query[prefix_size:]
-        query = query + '&result_type=recent&count=10'
-        print(query)
+        query = trend.query
+        query = 'q=' + query + '&result_type=recent&count=1'
         tweets = api.GetSearch(raw_query=query)
-        accounts = []
+
         for tweet in tweets:
-            accounts.append(tweet.user.screen_name)
-        results.append(accounts)
+            results.append({ 
+                'trend': trend.name,
+                'time': trend.timestamp,
+                'username': tweet.user.screen_name,
+                'is_bot': bot_classifier(tweet.user.screen_name)
+            })
 
     return results
 
 
+def write_csv(data):
+    fnames = ['trend', 'time', 'username', 'is_bot']
+    output_file = open('output.csv', 'w', newline='')
+    writer = csv.DictWriter(output_file, fieldnames=fnames)
 
-def bot_classifier(results, twitter_app_auth):
+    with output_file:
+        writer.writeheader()
+        for row in data:
+            writer.writerow(row)
+
+
+def bot_classifier(username):
     bom = botometer.Botometer(wait_on_ratelimit=True, rapidapi_key=s.rapidapi_key, **twitter_app_auth)
-    for account in results:
-        name = '@' + account.user.screen_name
-        bom_score = bom.check_account(name)
-        score = bom_score["display_scores"]["universal"]
-        print(name + ' ' + str(score))
+    account = '@' + username
+    bot_score = bom.check_account(account)
+    score = bot_score["display_scores"]["universal"]
+    return score > threshold
 
 
-results = query_trends()
-print(results)
+if __name__ == "__main__":
+    results = query_trends()
+    write_csv(results)
