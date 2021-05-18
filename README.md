@@ -1,14 +1,14 @@
 # Twitter Trends
 
 ## Update settings
-- Rename settings.pyenv extension from ".pyenv" to ".py"
-- Write the settings needed
+1. Rename settings.pyenv extension from ".pyenv" to ".py"
+2. Update settings as needed
 
 ## Run environment
 
 ### Windows
 
-1. Go to the projects path
+1. Go to the root path
 2. Execute this command: `./env/Scripts/activate`
 
 ## Save requirements
