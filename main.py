@@ -9,8 +9,6 @@ import csv
 from argparse import ArgumentParser
 
 
-client = yweather.Client()
-woeid = client.fetch_woeid('Brazil')
 threshold = 0.6
 
 twitter_app_auth = {
@@ -28,7 +26,7 @@ api = twitter.Api(consumer_key=s.consumer_key,
 
 
 def query_trends():
-    trends = api.GetTrendsWoeid(woeid)
+    trends = api.GetTrendsCurrent()
     trends = trends[:1]
     results = []
 
